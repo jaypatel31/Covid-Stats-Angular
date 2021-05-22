@@ -1,0 +1,74 @@
+  <!-- Dropdown Trigger -->
+
+
+<div style="margin:auto;text-align:center;">
+    <button mat-button [matMenuTriggerFor]="menu" style="color:white;">Display Data As</button>
+    <span *ngIf="value" style="color:white;">:&nbsp;&nbsp;&nbsp;&nbsp;{{value}}</span>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="monthwise()">Month Wise</button>
+      <button mat-menu-item (click)="daywise()">Day Wise</button>
+    </mat-menu>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <div style="width:100%;">
+        
+      <section *ngIf="stats.length > 0 || daywiseData.length > 0" id="state-heading">
+        <h1 [class]="color">{{yAxisLabel}}</h1>
+</section>
+    <section *ngIf="daywiseData.length > 0 && stats.length == 0" id="stats-container">
+  <div class="example-button-row">
+    <button mat-button color="warn" (click)="colorChange('warn')"><p>Confirmed</p><span>+{{daywiseData[0].series[daywiseData[0].series.length-1].value}}</span><h1>{{totaldaywise.totalConfirmed}}</h1></button>
+    <button mat-button color="primary" (click)="colorChange('primary')"><p>Active</p><span>{{(daywiseData[0].series[daywiseData[0].series.length-1].value > daywiseData[1].series[daywiseData[0].series.length-1].value)?'+':''}}{{daywiseData[0].series[daywiseData[0].series.length-1].value - daywiseData[1].series[daywiseData[0].series.length-1].value}}</span><h1>{{totaldaywise.totalActive}}</h1></button>
+    <button mat-button color="accent" (click)="colorChange('accent')"><p>Recovered</p><span>+{{daywiseData[1].series[daywiseData[0].series.length-1].value}}</span><h1>{{totaldaywise.totalRecovered}}</h1></button>
+    <button mat-button (click)="colorChange('normal')"><p>Deceased</p><span>+{{daywiseData[2].series[daywiseData[2].series.length-1].value}}</span><h1>{{totaldaywise.totalDeseased}}</h1></button>
+  </div>
+</section>
+
+    <ngx-charts-bar-vertical *ngIf="stats.length > 0 && daywiseData.length == 0"
+      (window:resize)="onResize($event)"
+      [view]="view"
+      [scheme]="colorScheme"
+      [results]="stats"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [animations]="animations"
+      style="fill: #fff;"
+      >
+    </ngx-charts-bar-vertical>
+
+
+    <ngx-charts-line-chart *ngIf="daywiseData.length > 0 && stats.length == 0"
+      [view]="view"
+      [scheme]="colorScheme"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="daywiseData"
+      [animations]="animations"
+      style="fill: #fff"
+      >
+        <ng-template #seriesTooltipTemplate let-model="model">
+          <h3>{{model[0].name}}</h3>
+          <div><span class="tooltip-label-color" style="background-color: rgb(255, 0, 0);"></span>Confirmed : {{model[0].value}}</div>
+          <br>
+          <div><span class="tooltip-label-color" style="background-color: rgb(34, 139, 34);"></span>Recovered : {{model[1].value}}</div>
+          <br>
+          <div><span class="tooltip-label-color" style="background-color: rgb(153, 153, 153);"></span>Deceased : {{model[2].value}}</div>
+          <br>     
+        </ng-template>
+    </ngx-charts-line-chart>
+    </div>
+</div> 

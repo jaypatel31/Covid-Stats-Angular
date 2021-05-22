@@ -1,0 +1,105 @@
+  
+<div >
+	<br>
+	<br>
+
+<mat-form-field appearance="fill" style="margin-top:5px;margin-left: 15px;">
+  <mat-label >Select an option</mat-label>
+  <mat-select (selectionChange)="selectionUpdate($event)">
+    <mat-option>None</mat-option>
+    <mat-option value="All States">All States</mat-option>
+    <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+<!-- 	<mat-option value="Maharashtra">Maharashtra</mat-option>
+	<mat-option value="Karnataka">Karnataka</mat-option>
+	<mat-option value="Kerala">Kerala</mat-option>
+	<mat-option value="Tamil Nadu">Tamil Nadu</mat-option>
+	<mat-option value="Uttar Pradesh">Uttar Pradesh</mat-option>
+	<mat-option value="Andhra Pradesh">Andhra Pradesh</mat-option>
+	<mat-option value="Delhi">Delhi</mat-option>
+	<mat-option value="West Bengal">West Bengal</mat-option>
+	<mat-option value="Chhattisgarh">Chhattisgarh</mat-option>
+	<mat-option value="Rajasthan">Rajasthan</mat-option>
+	<mat-option value="Gujarat">Gujarat</mat-option>
+	<mat-option value="Madhya Pradesh">Madhya Pradesh</mat-option>
+	<mat-option value="Haryana">Haryana</mat-option>
+	<mat-option value="Bihar">Bihar</mat-option>
+	<mat-option value="Odisha">Odisha</mat-option>
+	<mat-option value="Telangana">Telangana</mat-option>
+	<mat-option value="Punjab">Punjab</mat-option>
+	<mat-option value="Assam">Assam</mat-option>
+	<mat-option value="Jharkhand">Jharkhand</mat-option>
+	<mat-option value="Uttarakhand">Uttarakhand</mat-option>
+	<mat-option value="Jammu and Kashmir">Jammu and Kashmir</mat-option>
+	<mat-option value="Himachal Pradesh">Himachal Pradesh</mat-option>
+	<mat-option value="Goa">Goa</mat-option>
+	<mat-option value="Puducherry">Puducherry</mat-option>
+	<mat-option value="Chandigarh">Chandigarh</mat-option>
+	<mat-option value="Tripura">Tripura</mat-option>
+	<mat-option value="Manipur">Manipur</mat-option>
+	<mat-option value="Meghalaya">Meghalaya</mat-option>
+	<mat-option value="Arunachal Pradesh">Arunachal Pradesh</mat-option>
+	<mat-option value="Nagaland">Nagaland</mat-option>
+	<mat-option value="Ladakh">Ladakh</mat-option>
+	<mat-option value="Sikkim">Sikkim</mat-option>
+	<mat-option value=" Dadra and Nagar Haveli "> Dadra and Nagar Haveli  </mat-option>
+	<mat-option value="Mizoram">Mizoram</mat-option>
+	<mat-option value=" Andaman and Nicobar Islands "> Andaman and Nicobar Islands </mat-option>
+	<mat-option value="Lakshadweep">Lakshadweep</mat-option> -->
+
+  </mat-select>
+</mat-form-field>
+<section *ngIf="statewise.length > 0" id="state-heading">
+	<h1 [class]="color">{{xAxisLabel}}</h1>
+</section>
+<section *ngIf="statewise.length > 0" id="stats-container">
+  <div class="example-button-row">
+  	<button mat-button color="warn" (click)="colorChange('warn')"><p>Confirmed</p><span>+{{statewise[0].series[statewise[0].series.length-1].value}}</span><h1>{{totalstatewise.totalConfirmed}}</h1></button>
+  	<button mat-button color="primary" (click)="colorChange('primary')"><p>Active</p><span>{{(statewise[0].series[statewise[0].series.length-1].value > statewise[1].series[statewise[0].series.length-1].value)?'+':''}}{{statewise[0].series[statewise[0].series.length-1].value - statewise[1].series[statewise[0].series.length-1].value}}</span><h1>{{totalstatewise.totalActive}}</h1></button>
+    <button mat-button color="accent" (click)="colorChange('accent')"><p>Recovered</p><span>+{{statewise[1].series[statewise[0].series.length-1].value}}</span><h1>{{totalstatewise.totalRecovered}}</h1></button>
+    <button mat-button (click)="colorChange('normal')"><p>Deceased</p><span>+{{statewise[2].series[statewise[2].series.length-1].value}}</span><h1>{{totalstatewise.totalDeseased}}</h1></button>
+  </div>
+</section>
+<ngx-charts-bar-horizontal *ngIf="selected == 'All States'"
+  (window:resize)="onResize($event)"
+  [view]="view"
+  [scheme]="colorScheme"
+  [results]="data"
+  [gradient]="gradient"
+  [xAxis]="showXAxis"
+  [yAxis]="showYAxis"
+  [legend]="showLegend"
+  [showXAxisLabel]="showXAxisLabel"
+  [showYAxisLabel]="showYAxisLabel"
+  [xAxisLabel]="xAxisLabel"
+  [yAxisLabel]="yAxisLabel"
+  [animations]="animations"
+  style="fill: #fff;"
+>
+</ngx-charts-bar-horizontal>
+
+<ngx-charts-line-chart *ngIf="statewise.length > 0"
+      [view]="view"
+      [scheme]="colorScheme"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="statewise"
+      [animations]="animations"
+      style="fill: #fff"
+      >
+        <ng-template #seriesTooltipTemplate let-model="model">
+          <h3>{{model[0].name}}</h3>
+          <div><span class="tooltip-label-color" style="background-color: rgb(255, 0, 0);"></span>Confirmed : {{model[0].value}}</div>
+          <br>
+          <div><span class="tooltip-label-color" style="background-color: rgb(34, 139, 34);"></span>Recovered : {{model[1].value}}</div>
+          <br>
+          <div><span class="tooltip-label-color" style="background-color: rgb(153, 153, 153);"></span>Deceased : {{model[2].value}}</div>
+          <br>     
+        </ng-template>
+    </ngx-charts-line-chart>
+</div>

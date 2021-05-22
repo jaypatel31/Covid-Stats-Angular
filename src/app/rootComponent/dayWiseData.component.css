@@ -1,0 +1,42 @@
+.tooltip-label-color{
+	border-radius: 3px;
+    color: #5b646b;
+    display: inline-block;
+    height: 15px;
+    margin-right: 5px;
+    width: 15px;
+    vertical-align: text-bottom;
+}
+#stats-container{
+	display:flex;
+	justify-content: space-around;
+	margin:25px 0px;
+}
+#stats-container button{
+	margin:0px 5px;
+}
+#stats-container button h1{
+	margin:1px 0px;
+}
+#stats-container button p{
+	margin:2px 0px;
+}
+#stats-container button span{
+    margin-bottom: -13px;
+    display: inline-block;
+}
+#state-heading h1{
+	margin-left:25px;
+}
+.heading-warn{
+	color: #f44336;
+}
+.heading-accent{
+	color:#69f0ae;
+}
+.heading-primary{
+	color:#7b1fa2;
+}
+.heading-normal{
+	color:#f1f1f1;
+}
